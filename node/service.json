@@ -1,0 +1,18 @@
+{
+  "memory": 1024,
+  "ttl": 60,
+  "timeout": 60,
+  "minReplicas": 2,
+  "maxReplicas": 60,
+  "workers": 4,
+  "routes": {
+    "users": {
+      "path": "/_v/shopping-club-users/users",
+      "public": true
+    },
+    "usersId": {
+      "path": "/_v/shopping-club-users/users/:id",
+      "public": true
+    }
+  }
+}
