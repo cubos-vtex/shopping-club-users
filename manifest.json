@@ -1,7 +1,7 @@
 {
   "name": "shopping-club-users",
   "vendor": "ssesandbox04",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "title": "Shopping Club Users",
   "description": "Manage users of a shopping club for VTEX IO.",
   "categories": [],
@@ -108,7 +108,9 @@
   },
   "billingOptions": {
     "type": "free",
-    "availableCountries": ["*"]
+    "availableCountries": [
+      "*"
+    ]
   },
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
 }
