@@ -3,6 +3,8 @@ import { UserInputError } from '@vtex/api'
 import { SCHEMAS, USER_ENTITY, USER_FIELDS } from '../masterdata-setup'
 import { BaseMasterdataController } from './base/BaseMasterdataController'
 
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+
 export class UserMasterdataController extends BaseMasterdataController<User> {
   constructor(ctx: Context) {
     super(ctx, USER_ENTITY, USER_FIELDS)
@@ -23,7 +25,27 @@ export class UserMasterdataController extends BaseMasterdataController<User> {
   }
 
   public async create() {
-    const fields = await this.getUserFields(SCHEMAS.user.body.required)
+    const { required } = SCHEMAS.user.body
+    const fields = await this.getUserFields(required)
+
+    const missingFields: string[] = []
+
+    Object.entries(fields).forEach(([key, value]) => {
+      if (!value.trim()) {
+        missingFields.push(key)
+      }
+    })
+
+    if (missingFields.length) {
+      throw new UserInputError(
+        `Missing required fields: ${missingFields.join(', ')}`
+      )
+    }
+
+    if (!EMAIL_REGEX.test(fields.email)) {
+      throw new UserInputError(`Invalid email: ${fields.email}`)
+    }
+
     const existing = await this.getByEmail(fields.email).catch(() => null)
 
     if (existing) {
